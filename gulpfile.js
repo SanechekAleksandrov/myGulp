@@ -77,22 +77,26 @@ function images() {
 			{cleanupIDs: false}
 		]
 	})
-   ]))
+   ]), {base:'app'})
    .pipe(dest('dist/images'))
 }
+
 
 function build () {
    return src([
       'app/**/*.html',
       'app/css/style.min.css',
-      'app/js/main.min.js'
+      'app/css/style.css',
+      'app/js/main.min.js',
+      'app/js/main.js'
    ], {base:'app'})
    .pipe(dest('dist'))
 }
 
 
+
 function cleandist() {
-   return del(['dist'])
+   return del('dist')
 }
 
 function watching() {
@@ -112,6 +116,7 @@ exports.watching = watching;
 exports.images = images; 
 exports.nunjucks = nunjucks; 
 exports.cleandist = cleandist; 
+
 
 
 exports.build = series(cleandist, images, build);
