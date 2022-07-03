@@ -28,7 +28,7 @@ function nunjucks(){
    .pipe(browserSync.stream())
 }
 
-function styles() {
+function stylesMin() {
    return src('app/scss/*.scss')
    .pipe(scss({outputStyle: 'compressed'}))
    .pipe(rename({
@@ -41,6 +41,13 @@ function styles() {
    .pipe(dest('app/css'))
    .pipe(browserSync.stream())
 }
+
+function stylesMax(){
+   return src('app/scss/style.scss')
+   .pipe(scss())
+   .pipe(dest('app/css'))
+}
+
 
 function scripts() {
    return src([
@@ -89,14 +96,16 @@ function cleandist() {
 }
 
 function watching() {
-   watch(['app/**/*.scss'],styles);
+   watch(['app/**/*.scss'],stylesMin);
+   watch(['app/**/*.scss'],stylesMax);
    watch(['app/*.njk'],nunjucks);
    watch(['app/js/**/*.js', '!app/js/main.min.js'], scripts);
    watch(['app/*.html']).on('change', browserSync.reload);
 }
 
 
-exports.styles = styles;
+exports.stylesMin = stylesMin;
+exports.stylesMax = stylesMax;
 exports.scripts = scripts;
 exports.browsersync = browsersync;
 exports.watching = watching;
@@ -106,5 +115,5 @@ exports.cleandist = cleandist;
 
 
 exports.build = series(cleandist, images, build);
-exports.default = parallel(nunjucks, styles, scripts, browsersync, watching); 
+exports.default = parallel(nunjucks, stylesMin, stylesMax, scripts, browsersync, watching); 
 
