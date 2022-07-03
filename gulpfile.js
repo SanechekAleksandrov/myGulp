@@ -43,8 +43,12 @@ function stylesMin() {
 }
 
 function stylesMax(){
-   return src('app/scss/style.scss')
+   return src('app/scss/*.scss')
    .pipe(scss())
+   .pipe(autoprefixer({
+      overrideBrowserslist: ['last 10 versions'], 
+      grid:true
+   }))
    .pipe(dest('app/css'))
 }
 
@@ -99,6 +103,7 @@ function build() {
       'app/**/*.html',
       'app/css/style.min.css',
       'app/css/style.css',
+      'app/css/*.css',
       'app/js/main.min.js',
       'app/js/main.js'
    ], {base:'app'})
